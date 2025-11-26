@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday once again... My Love! Hugging you tightlyy Sweetheart😘😘✨✨💐💐</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Custom styles for animations and aesthetics */
+        :root {
+            --bg-pink: #FFF0F5; /* Very light pink background */
+            --card-pink: #FFCCD5; /* Card background */
+            --highlight-pink: #F472B6; /* Deep pink  for highlights/bow */
+            --text-color: #9D174D; /* Rose red text */
+            --accent-color: #E11D74; /* Accent for buttons/gifts (Deep Rose) */
+        }
+        
+        body {
+            /* Changed main font to Bell MT */
+            font-family: 'Bell MT', Georgia, serif;
+            background-color: var(--bg-pink);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow: hidden; 
+        }
+
+        .card {
+            background-color: var(--card-pink);
+            color: var(--text-color);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            transition: all 0.5s ease-in-out;
+            transform-origin: center;
+            max-width: 90vw;
+            width: 500px;
+            min-height: 400px;
+            position: relative;
+            overflow: hidden; 
+        }
+
+        .stage {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .stage.active {
+            opacity: 1;
+            z-index: 10;
+        }
+
+        .romantic-heading {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        .surprise-message {
+            background-color: var(--accent-color); 
+            color: white; 
+            border: none; 
+            max-width: 90%;
+            z-index: 20;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8); 
+            opacity: 0;
+            transition: opacity 0.4s ease-out, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            pointer-events: none;
+        }
+        
+        .surprise-message.visible {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1); 
+            pointer-events: auto;
+        }
+
+        .gift-box-wrapper {
+            cursor: pointer; 
+            width: 150px; 
+            height: 150px; 
+            position: relative;
+            margin: 1.5rem 0; 
+            transform-origin: bottom;
+            transition: transform 0.2s ease-in-out;
+            z-index: 7; 
+        }
+
+        .gift-box-wrapper:hover {
+            transform: scale(1.1);
+        }
+        
+        .gift-element {
+            position: absolute;
+            box-shadow: 0 5px 15px #0000004d;
+            border-radius: 0.5rem;
+            width: 100%; 
+            left: 0;
+        }
+
+        .gift-base {
+            width: 100%;
+            height: 80%; 
+            top: 20%; 
+            background-color: #f975b5; 
+            border: 2px solid var(--highlight-pink);
+        }
+
+        .gift-lid {
+            height: 20%; 
+            top: 0;
+            z-index: 5; 
+            transition: transform 0.8s cubic-bezier(0.55, 0.085, 0.68, 0.53), opacity 0.8s ease-out; 
+            background-color: var(--highlight-pink); 
+            border: 2px solid var(--highlight-pink);
+            background-color: #f7609c;
+        }
+        
+        .gift-lid.open {
+            transform: translateY(180px) scale(0.8); 
+            opacity: 0; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
+        }
+        
+        .ribbon-vertical {
+            position: absolute;
+            width: 20px;
+            height: 80%;
+            background-color: var(--accent-color);
+            top: 26px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 4; 
+        } 
+        .ribbon-horizontal {
+            position: absolute;
+            width: 100%;
+            height: 20px;
+            background-color: var(--accent-color);
+            top: 50%;
+            transform: translateY(-50%);
+            left: 0;
+            z-index: 4; 
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%; 
+            max-width: 260px; 
+            padding-top: 56.25%;  
+            background-color: #2D0823;
+            border-radius: 0.75rem; 
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); 
+        }
+
+        .video-player {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain; 
+        }
+
+        #error-message {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #B91C1C; 
+            color: white;
+            padding: 8px;
+            text-align: center;
+            border-radius: 0 0 0.75rem 0.75rem;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.5s;
+            z-index: 10;
+        }
+
+        #error-message.visible {
+            opacity: 1;
+        }
+        
+        /* Removed celebrate-button styles as the element is removed from HTML */
+
+        @keyframes floatUp {
+            0% { transform: translate(0, 0) scale(0.8); opacity: 0; }
+            20% { opacity: 1; transform: translate(0, -20px) scale(1); }
+            100% { transform: translate(var(--x-offset), -450px) scale(1.2); opacity: 0; } 
+        }
+
+        .floating-element {
+            position: absolute;
+            animation: floatUp var(--duration) ease-out forwards;
+            pointer-events: none; 
+            z-index: 15; 
+        }
+
+        .balloon {
+            width: 30px;
+            height: 40px;
+            background-color: var(--highlight-pink);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            bottom: 0; 
+            left: var(--start-x); 
+            opacity: 0;
+        }
+
+        .balloon::before { 
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background-color: var(--highlight-pink);
+            bottom: -3px;
+            left: 50%;
+            transform: translateX(-50%) rotate(45deg);
+        }
+
+        .heart {
+            width: 25px;
+            height: 25px;
+            background-color: var(--accent-color);
+            position: relative;
+            transform: rotate(-45deg);
+            bottom: 0; 
+            left: var(--start-x); 
+            opacity: 0;
+        }
+        .heart::before,
+        .heart::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+        }
+        .heart::before {
+            top: -12.5px;
+            left: 0;
+        }
+        .heart::after {
+            left: 12.5px;
+            top: 0;
+        }
+    </style>
+</head>
+<body>
+   <!-- START Background Music Code (LINE 425) --><audio id="background-music" loop autoplay>
+        <source src="d.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+
+    <div id="birthday-card" class="card rounded-3xl p-6 md:p-10">
+
+        <!-- Stage 1: Initial View --><div id="stage-intro" class="stage active">
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-4 romantic-heading" style="color: var(--highlight-pink);">Happy Birthday, Jerry!</h1>
+            
+            <div id="gift-container" class="gift-box-wrapper my-6">
+                <div class="ribbon-vertical"></div>
+                <div class="ribbon-horizontal"></div>
+                <div id="gift-base" class="gift-element gift-base"></div>
+                <div id="gift-lid" class="gift-element gift-lid"></div>
+            </div>
+            
+            <p class="text-xl md:text-2xl font-semibold mb-4">
+                A little surprise is waiting for you, my pretty girl❤️
+            </p>
+            <p id="gift-instruction" class="text-lg md:text-xl font-bold italic animate-pulse" style="color: var(--accent-color);">
+                Tap the Gift!
+            </p>
+        </div>
+
+        <!-- Stage 2: Video Playback --><div id="stage-video" class="stage">
+            <h2 class="text-3xl font-bold mb-4">Let's celebrate you birthday....together✨</h2>
+            <div class="video-container">
+                <video id="surprise-video-element" 
+                    class="video-player rounded-lg" 
+                    playsinline
+                    preload="metadata"
+                    poster='https://placehold.co/400x225/A21CAF/FFFFFF?text=Tap+for+Surprise+Video'
+                    muted autoplay
+                    onclick="this.muted = false; this.play();"
+                >
+                    <!-- Video controls removed --><source src="my_video.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                
+                <!-- Error message for missing files --><div id="error-message"></div>
+                
+                <!-- Added a visual indicator for missing files in the UI --><div id="file-check-message" class="absolute inset-0 bg-red-800 bg-opacity-90 flex justify-center items-center p-4 text-white text-center rounded-lg opacity-0 pointer-events-none transition-opacity duration-500">
+                    <p class="text-lg font-bold">⚠️ IMPORTANT: Video file 'my_video.mp4' is missing. Make sure you open the HTML from the same folder as your video file!</p>
+                </div>
+            </div>
+            <!-- Instruction for sound if autoplay works but is muted --><p id="unmute-tip" class="text-sm mt-4 text-gray-700 font-medium">
+                (Made with loveeee🥰🥰)
+            </p>
+        </div>
+        
+        <!-- Stage 3: Second Picture --><div id="stage-picture" class="stage">
+            <!-- First text line --><p class="text-3xl font-bold mt-10 mb-2 romantic-heading" style="color: var(--highlight-pink);">
+            </p>
+             <!-- Second text line --><p class="text-3xl font-semibold mb-6" style="color: var(--text-color);">
+                Sweetest birthday gift… handle it with love 💖
+            </p>
+            <img id="surprise-picture" 
+                 src="my_picture.jpg" 
+                 alt="A surprise photo" 
+                 class="rounded-xl shadow-2xl w-full max-w-[260px] mx-auto mt-auto mb-auto" 
+                 onerror="document.getElementById('file-check-message-picture').classList.add('opacity-100'); this.src='https://placehold.co/300x300/F9A8D4/701A75?text=MISSING+my_picture.jpg';"
+            >
+            <p id="picture-message" class="text-sm mt-2 text-red-700 bg-red-100 p-2 rounded-lg opacity-0 transition duration-500">
+                
+            </p>
+             <!-- Added a visual indicator for missing files in the UI for the picture --><div id="file-check-message-picture" class="absolute inset-0 bg-red-800 bg-opacity-90 flex justify-center items-center p-4 text-white text-center rounded-lg opacity-0 pointer-events-none transition-opacity duration-500">
+                <p class="text-lg font-bold">⚠️ IMPORTANT: Picture file 'my_picture.jpg' is missing. Make sure the HTML and picture are in the same folder!</p>
+            </div>
+        </div>
+
+        <!-- Stage 4: Final Conclusion --><div id="stage-conclusion" class="stage">
+            <div class="p-8 rounded-xl shadow-2xl bg-white text-center border-4 border-pink-300 w-full max-w-lg mx-auto">
+                <p class="text-2xl md:text-3xl font-extrabold mb-8 leading-relaxed">
+                    With you, everything feels brighter.<br>
+                    I just wanted to remind you how loved you are — today and always.<br>
+                    You’re my home, my girl, my happiness. 💗
+          
+                    Ending This With Lovee.....All Yours 😘
+                </p>
+                
+            </div>
+        </div>
+        
+
+        <!-- Message Box (Overlays other stages) --><div id="message-box" class="surprise-message p-6 rounded-2xl shadow-2xl">
+            <p class="text-3xl font-bold mb-4">
+                I Have A Gift for U
+            </p>
+            <button id="show-gift-button" class="mt-4 px-6 py-2 bg-pink-500 text-white font-bold rounded-full hover:bg-pink-600 transition duration-300 transform hover:scale-105 shadow-md">
+                Wanna See?
+            </button>
+        </div>
+
+    </div>
+
+   
+    <!-- END Background Music Code --><script>
+        // Elements
+        const giftContainer = document.getElementById('gift-container');
+        const giftLid = document.getElementById('gift-lid');
+        const card = document.getElementById('birthday-card'); 
+        const videoElement = document.getElementById('surprise-video-element');
+        const errorMessage = document.getElementById('error-message');
+        const pictureElement = document.getElementById('surprise-picture');
+        const messageBox = document.getElementById('message-box');
+        const showGiftButton = document.getElementById('show-gift-button');
+        const videoFileCheckMessage = document.getElementById('file-check-message');
+        const pictureFileCheckMessage = document.getElementById('file-check-message-picture');
+        const backgroundMusic = document.getElementById('background-music'); // New Audio Element
+        
+        
+        // ************************************************************************************
+        // ****************************** ACTION REQUIRED *************************************
+        // ************************************************************************************
+        
+        // 🚀 STEP 1: Rename your video file to exactly 'my_video.mp4'.
+        // 🚀 STEP 2: Rename your picture file to exactly 'my_picture.jpg'.
+        // 🚀 STEP 3: Rename your background audio file to exactly 'my_song.mp3'.
+        // 🚀 STEP 4: Place this HTML file, 'my_video.mp4', 'my_picture.jpg', and 'my_song.mp3' ALL in the same folder.
+        // 🚀 STEP 5: Zip the folder and send the ZIP file to the recipient.
+        
+        const VIDEO_FILENAME = "a.mp4"; 
+        const PICTURE_FILENAME = "b.jpg"; 
+
+        // Set the sources using the filenames (Done directly in HTML now, but this confirms files names)
+        videoElement.querySelector('source').src = VIDEO_FILENAME;
+        pictureElement.src = PICTURE_FILENAME;
+
+        // --- Core Functions ---
+        function transitionTo(targetId) {
+            document.querySelectorAll('.stage').forEach(stage => {
+                stage.classList.remove('active');
+            });
+            document.getElementById(targetId).classList.add('active');
+        }
+
+        function createFloatingElement(type) {
+            const element = document.createElement('div');
+            element.classList.add('floating-element', type);
+            const startX = Math.random() * 100 + '%';
+            const duration = Math.random() * 3 + 4 + 's'; 
+            const xOffset = (Math.random() - 0.5) * 100 + 'px';
+
+            element.style.setProperty('--start-x', startX);
+            element.style.setProperty('--duration', duration);
+            element.style.setProperty('--x-offset', xOffset);
+
+            card.appendChild(element); 
+
+            element.addEventListener('animationend', () => {
+                element.remove();
+            });
+        }
+        
+        function showGiftMessage() {
+            videoElement.pause();
+             // Pause music when message box appears
+            messageBox.classList.add('visible');
+            document.getElementById('unmute-tip').classList.add('hidden'); // Hide tip when done
+        }
+
+        let messageTimeout = null;
+
+        const proceedToPictureStage = () => {
+            if (messageTimeout) {
+                clearTimeout(messageTimeout);
+                messageTimeout = null; 
+            }
+            
+            if (document.getElementById('stage-video').classList.contains('active')) {
+                showGiftMessage(); 
+            }
+        };
+
+        // --- File Check & Error Handling ---
+        // Added more descriptive error message to the console
+        videoElement.addEventListener('error', (e) => {
+             console.error("Video failed to load. Ensure 'my_video.mp4' is in the same folder.", e);
+             videoFileCheckMessage.classList.add('opacity-100');
+        });
+
+        // Added more descriptive error message to the console
+        pictureElement.addEventListener('error', (e) => {
+             console.error("Picture failed to load. Ensure 'my_picture.jpg' is in the same folder.", e);
+             pictureFileCheckMessage.classList.add('opacity-100');
+        });
+        
+        // --- Event Listeners ---
+
+        // Stage 1: Tap the Gift
+        giftContainer.addEventListener('click', () => {
+            
+            giftLid.classList.add('open');
+            giftContainer.style.pointerEvents = 'none';
+
+            // New: Attempt to play music after first user interaction
+            if (backgroundMusic) {
+                backgroundMusic.play().catch(error => {
+                    console.warn("Background music auto-play failed, likely blocked.", error);
+                });
+            }
+
+            for (let i = 0; i < 5; i++) { 
+                setTimeout(() => createFloatingElement('balloon'), Math.random() * 300); 
+                setTimeout(() => createFloatingElement('heart'), Math.random() * 300); 
+            }
+
+            setTimeout(() => {
+                transitionTo('stage-video');
+                
+                // --- ATTEMPT AUTO-PLAY HERE ---
+                videoElement.play().catch(error => {
+                    console.error("Video playback failed on auto-play (browser block):", error);
+                    errorMessage.textContent = "The video started muted! Tap the screen to enable sound.";
+                    errorMessage.classList.add('visible');
+                    // Even if it fails, it might start muted, so we continue the rest of the flow.
+                });
+                // ------------------------------
+
+                // Listener for video end
+                videoElement.onended = proceedToPictureStage;
+
+                // 10-second fallback timer (This now acts as a timeout for the entire video stage)
+                messageTimeout = setTimeout(() => {
+                    console.log("Fallback activated: 10 seconds elapsed. Proceeding to next surprise.");
+                    proceedToPictureStage();
+                }, 9800); 
+
+            }, 800);
+        });
+
+        // "Wanna See?" Button Click
+        showGiftButton.addEventListener('click', () => {
+            messageBox.classList.remove('visible');
+            
+            // Continue playing music when moving to picture stage
+            if (backgroundMusic) backgroundMusic.play().catch(error => console.warn("Music continued play failed.", error));
+
+            // Check if the image loaded successfully before hiding the error overlay
+            if (pictureElement.naturalWidth === 0 && !pictureFileCheckMessage.classList.contains('opacity-100')) {
+                 // Check will fail if image is truly missing, so manually trigger the visible warning
+                 pictureFileCheckMessage.classList.add('opacity-100');
+            }
+
+            transitionTo('stage-picture');
+            
+            setTimeout(() => {
+                // Pause music on final stage for a more focused reading experience
+                
+                transitionTo('stage-conclusion');
+            }, 6000); 
+            
+        });
+
+        // Initialize
+        transitionTo('stage-intro');
+
+    </script>
+</body>
+</html>
